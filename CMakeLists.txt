@@ -87,6 +87,7 @@ project(tritononnxruntimebackend LANGUAGES C CXX)
 #
 option(TRITON_ENABLE_GPU "Enable GPU support in backend" ON)
 option(TRITON_ENABLE_STATS "Include statistics collections in backend" ON)
+option(TRITON_ENABLE_METRICS "Include metrics support in server" ON)
 option(TRITON_ENABLE_ONNXRUNTIME_TENSORRT
   "Enable TensorRT execution provider for ONNXRuntime backend in server" OFF)
 option(TRITON_ENABLE_ONNXRUNTIME_OPENVINO
@@ -112,6 +113,11 @@ set(TRITON_COMMON_REPO_TAG "main" CACHE STRING "Tag for triton-inference-server/
 
 # Use C++17 standard as Triton's minimum required.
 set(TRITON_MIN_CXX_STANDARD 17 CACHE STRING "The minimum C++ standard which features are requested to build this target.")
+
+if(TRITON_ENABLE_METRICS AND NOT TRITON_ENABLE_STATS)
+  message(
+    FATAL_ERROR "TRITON_ENABLE_METRICS=ON requires TRITON_ENABLE_STATS=ON")
+endif()
 
 if (WIN32)
   if(TRITON_ENABLE_ONNXRUNTIME_OPENVINO)

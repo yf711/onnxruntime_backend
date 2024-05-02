@@ -3003,6 +3003,31 @@ TRITONBACKEND_ModelInstanceInitialize(TRITONBACKEND_ModelInstance* instance)
         instance, ba_array, ba_len));
   }
 
+  // Get server obj
+  TRITONSERVER_Server* server;
+  RETURN_IF_ERROR(TRITONBACKEND_ModelServer(model, &server));
+
+  // Query metric info
+  TRITONSERVER_Metrics* metrics = nullptr;
+  RETURN_IF_ERROR(TRITONSERVER_ServerMetrics(server, &metrics));
+
+  // Format metric info into Prometheus format
+  const char* base;
+  size_t byte_size;
+  RETURN_IF_ERROR(TRITONSERVER_MetricsFormatted(
+      metrics, TRITONSERVER_METRIC_PROMETHEUS, &base, &byte_size));
+
+  // Convert metric data to string
+  std::string metrics_str(base, byte_size)
+
+      // Output metric
+      LOG_MESSAGE(
+          TRITONSERVER_LOG_VERBOSE,
+          (std::string("Prometheus Metrics:\n") + metrics_str).c_str());
+
+  // Release metric resources
+  TRITONSERVER_MetricsDelete(metrics);
+
   return nullptr;  // success
 }
 
