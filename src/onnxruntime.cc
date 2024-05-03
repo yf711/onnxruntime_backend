@@ -3028,6 +3028,7 @@ TRITONBACKEND_ModelInstanceInitialize(TRITONBACKEND_ModelInstance* instance)
     if (line.find("nv_gpu_power_usage") != std::string::npos) {
       filtered_metrics.push_back(line);
     }
+  }
   
   for (const auto& metric : filtered_metrics) {
     LOG_MESSAGE(TRITONSERVER_LOG_INFO, metric.c_str());
