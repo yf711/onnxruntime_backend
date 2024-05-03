@@ -3003,7 +3003,7 @@ TRITONBACKEND_ModelInstanceInitialize(TRITONBACKEND_ModelInstance* instance)
         instance, ba_array, ba_len));
   }
 
-  LOG_MESSAGE(TRITONSERVER_LOG_INFO, (std::string("Query Prometheus Metric").c_str());
+  LOG_MESSAGE(TRITONSERVER_LOG_INFO, std::string("Query Prometheus Metric").c_str());
   
   // Get server obj
   TRITONSERVER_Server* server;
