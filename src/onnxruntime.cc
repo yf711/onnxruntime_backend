@@ -3024,11 +3024,12 @@ TRITONBACKEND_ModelInstanceInitialize(TRITONBACKEND_ModelInstance* instance)
   LOG_MESSAGE(TRITONSERVER_LOG_INFO, (std::string("Prometheus Metrics:\n") + metrics_str).c_str());
 
   // Test filtering metrics
+  std::string target_model = "densenet_onnx";
   std::vector<std::string> filtered_metrics;
   std::istringstream iss(metrics_str);
   std::string line;
   while (std::getline(iss, line)) {
-    if (line.find("nv_gpu_power_usage") != std::string::npos) {
+    if (line.find(target_model) != std::string::npos) {
       filtered_metrics.push_back(line);
     }
   }
@@ -3036,6 +3037,10 @@ TRITONBACKEND_ModelInstanceInitialize(TRITONBACKEND_ModelInstance* instance)
   for (const auto& metric : filtered_metrics) {
     LOG_MESSAGE(TRITONSERVER_LOG_INFO, metric.c_str());
   }
+
+  LOG_MESSAGE(
+    TRITONSERVER_LOG_INFO,
+    std::string("Prometheus Metrics ends.\n").c_str());
 
   // Release metric resources
   TRITONSERVER_MetricsDelete(metrics);
