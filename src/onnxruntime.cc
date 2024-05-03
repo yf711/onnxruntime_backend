@@ -3003,6 +3003,8 @@ TRITONBACKEND_ModelInstanceInitialize(TRITONBACKEND_ModelInstance* instance)
         instance, ba_array, ba_len));
   }
 
+  LOG_MESSAGE(TRITONSERVER_LOG_INFO, (std::string("Query Prometheus Metric").c_str());
+  
   // Get server obj
   TRITONSERVER_Server* server;
   RETURN_IF_ERROR(TRITONBACKEND_ModelServer(model, &server));
@@ -3019,7 +3021,8 @@ TRITONBACKEND_ModelInstanceInitialize(TRITONBACKEND_ModelInstance* instance)
 
   // Convert metric data to string
   std::string metrics_str(base, byte_size);
-  
+  LOG_MESSAGE(TRITONSERVER_LOG_INFO, (std::string("Prometheus Metrics:\n") + metrics_str).c_str());
+
   // Test filtering metrics
   std::vector<std::string> filtered_metrics;
   std::istringstream iss(metrics_str);
