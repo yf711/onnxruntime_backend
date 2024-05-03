@@ -3020,10 +3020,18 @@ TRITONBACKEND_ModelInstanceInitialize(TRITONBACKEND_ModelInstance* instance)
   // Convert metric data to string
   std::string metrics_str(base, byte_size);
   
-  // Output metric
-  LOG_MESSAGE(
-      TRITONSERVER_LOG_VERBOSE,
-      (std::string("Prometheus Metrics:\n") + metrics_str).c_str());
+  // Test filtering metrics
+  std::vector<std::string> filtered_metrics;
+  std::istringstream iss(metrics_str);
+  std::string line;
+  while (std::getline(iss, line)) {
+    if (line.find("nv_gpu_power_usage") != std::string::npos) {
+      filtered_metrics.push_back(line);
+    }
+  
+  for (const auto& metric : filtered_metrics) {
+    LOG_MESSAGE(TRITONSERVER_LOG_INFO, metric.c_str());
+  }
 
   // Release metric resources
   TRITONSERVER_MetricsDelete(metrics);
