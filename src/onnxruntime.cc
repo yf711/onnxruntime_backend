@@ -3020,10 +3020,7 @@ TRITONBACKEND_ModelInstanceInitialize(TRITONBACKEND_ModelInstance* instance)
   // Convert metric data to string
   std::string metrics_str(base, byte_size)
 
-      // Output metric
-      LOG_MESSAGE(
-          TRITONSERVER_LOG_VERBOSE,
-          (std::string("Prometheus Metrics:\n") + metrics_str).c_str());
+  printf("Prometheus Metrics:%s\n", metrics_str.c_str());
 
   // Release metric resources
   TRITONSERVER_MetricsDelete(metrics);
